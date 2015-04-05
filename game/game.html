@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Крестики-нолики</title>
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+	<h1>Игра крестики-нолики</h1>
+	<h2>Только настоящий интеллектуал сможет одержать победу</h2>
+	<table class="field">
+		<tr>
+			<td id="0"></td>
+			<td id="1"></td>
+			<td id="2"></td>
+		</tr>
+		<tr>
+			<td id="3"></td> 
+			<td id="4"></td>
+			<td id="5"></td>
+		</tr>
+		<tr>
+			<td id="6"></td>
+			<td id="7"></td>
+			<td id="8"></td>
+		</tr>
+	</table>
+	<script>
+(function game() {
+
+var t = new Array(9);
+//Определяем кто ходит первым
+
+tossUp()
+
+
+function tossUp() {
+    var a = Math.random() > 0.5 ? compChoice() : movePlayer();
+}
+
+function movePlayer() {
+      document.onclick = function(e) {
+        var target = e.target;
+        
+        if (target.tagName != "TD") return;
+
+        var choice = target.getAttribute('id'); 
+        t[choice] ? movePlayer(): move(choice, 'player')    
+    }
+}
+
+function compChoice() {
+    var a = Math.floor(Math.random()*9);
+    t[a] ? compChoice() : move(a, 'comp');
+}
+
+function move(id, typePlayer) {
+    t[id] = typePlayer;
+    document.getElementById(id).className = typePlayer;
+    !checkWin(typePlayer) ? typePlayer == 'player' ? compChoice(): movePlayer(): reset(typePlayer)
+}
+
+function checkWin(typePlayer) {
+    if (t[0]=='comp' && t[1]=='comp' && t[2]=='comp' || t[0]=='player' && t[1]=='player' && t[2]=='player')  return true;
+  if (t[3]=='comp' && t[4]=='comp' && t[5]=='comp' || t[3]=='player' && t[4]=='player' && t[5]=='player')  return true;
+  if (t[6]=='comp' && t[7]=='comp' && t[8]=='comp' || t[6]=='player' && t[7]=='player' && t[8]=='player')  return true;
+  if (t[0]=='comp' && t[3]=='comp' && t[6]=='comp' || t[0]=='player' && t[3]=='player' && t[6]=='player')  return true;
+  if (t[1]=='comp' && t[4]=='comp' && t[7]=='comp' || t[1]=='player' && t[4]=='player' && t[7]=='player')  return true;
+  if (t[2]=='comp' && t[5]=='comp' && t[8]=='comp' || t[2]=='player' && t[5]=='player' && t[8]=='player')  return true;
+  if (t[0]=='comp' && t[4]=='comp' && t[8]=='comp' || t[0]=='player' && t[4]=='player' && t[8]=='player')  return true;
+  if (t[2]=='comp' && t[4]=='comp' && t[6]=='comp' || t[2]=='player' && t[4]=='player' && t[6]=='player')  return true;
+    else if(t[0] && t[1] && t[2] && t[3] && t[4] && t[5] && t[6] && t[7] && t[8]) { reset ('Ничья!')};
+
+}
+
+function reset(typePlayer) {
+    console.log(typePlayer);
+
+    console.log(t);
+   (typePlayer=='Ничья!') ? alert('Ничья!') : alert("Победа "+typePlayer);
+      location.reload();
+}
+
+})();
+
+
+
+
+	</script>
+</body>
+</html>
